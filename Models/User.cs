@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Server.Models
+﻿namespace Server.Models
 {
     public class User
     {
@@ -13,6 +8,5 @@ namespace Server.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; } = false;
-
     }
 }

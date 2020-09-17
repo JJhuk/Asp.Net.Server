@@ -159,3 +159,4 @@ C:\Users\SHIFTUP\source\repos\Server\obj\Debug\netcoreapp3.1\Server.genruntimeco
 C:\Users\SHIFTUP\source\repos\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\SHIFTUP\source\repos\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
 C:\Users\SHIFTUP\source\repos\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\SHIFTUP\source\repos\Server\bin\Debug\netcoreapp3.1\json.json
