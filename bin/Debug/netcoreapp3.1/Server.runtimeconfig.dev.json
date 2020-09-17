@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\SHIFTUP\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\SHIFTUP\\.nuget\\packages"
-    ]
-  }
-}
