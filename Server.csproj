@@ -23,6 +23,98 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="Wd3w.AspNetCore.TokenAuthentication" Version="3.1.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Domain\bin\Debug\netcoreapp3.1\Domain.deps.json" />
+    <_ContentIncludedByDefault Remove="Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.dev.json" />
+    <_ContentIncludedByDefault Remove="Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Domain\obj\Domain.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Domain\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Domain\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Domain\Domain\bin\Debug\netcoreapp3.1\Domain.dll">
+      <Link>WebApplication\Domain\bin\Debug\netcoreapp3.1\Domain.dll</Link>
+    </None>
+    <None Update="Domain\Domain\bin\Debug\netcoreapp3.1\Domain.pdb">
+      <Link>WebApplication\Domain\bin\Debug\netcoreapp3.1\Domain.pdb</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.dll">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.dll</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.pdb">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.pdb</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.assets.cache">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.assets.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.genruntimeconfig.cache">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.genruntimeconfig.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.AssemblyInfoInputs.cache">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.AssemblyInfoInputs.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.csproj.FileListAbsolute.txt">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.csproj.FileListAbsolute.txt</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.csprojAssemblyReference.cache">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.csprojAssemblyReference.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.csproj.CoreCompileInputs.cache">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.csproj.CoreCompileInputs.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\project.nuget.cache">
+      <Link>WebApplication\Domain\obj\project.nuget.cache</Link>
+    </None>
+    <None Update="Domain\Domain\obj\rider.project.restore.info">
+      <Link>WebApplication\Domain\obj\rider.project.restore.info</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Domain.csproj.nuget.g.props">
+      <Link>WebApplication\Domain\obj\Domain.csproj.nuget.g.props</Link>
+    </None>
+    <None Update="Domain\Domain\obj\Domain.csproj.nuget.g.targets">
+      <Link>WebApplication\Domain\obj\Domain.csproj.nuget.g.targets</Link>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Domain\Domain\bin\Debug\netcoreapp3.1\Domain.deps.json">
+      <Link>WebApplication\Domain\bin\Debug\netcoreapp3.1\Domain.deps.json</Link>
+    </Content>
+    <Content Update="Domain\Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.json">
+      <Link>WebApplication\Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.json</Link>
+    </Content>
+    <Content Update="Domain\Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.dev.json">
+      <Link>WebApplication\Domain\bin\Debug\netcoreapp3.1\Domain.runtimeconfig.dev.json</Link>
+    </Content>
+    <Content Update="Domain\Domain\obj\project.assets.json">
+      <Link>WebApplication\Domain\obj\project.assets.json</Link>
+    </Content>
+    <Content Update="Domain\Domain\obj\project.packagespec.json">
+      <Link>WebApplication\Domain\obj\project.packagespec.json</Link>
+    </Content>
+    <Content Update="Domain\Domain\obj\Domain.csproj.nuget.dgspec.json">
+      <Link>WebApplication\Domain\obj\Domain.csproj.nuget.dgspec.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Domain\Domain\obj\Debug\netcoreapp3.1\Domain.AssemblyInfo.cs">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\Domain.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Update="Domain\Domain\obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs">
+      <Link>WebApplication\Domain\obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs</Link>
+    </Compile>
+    <Compile Update="Test\UnitTest1.cs">
+      <Link>TestProject1\UnitTest1.cs</Link>
+    </Compile>
   </ItemGroup>
 
 
