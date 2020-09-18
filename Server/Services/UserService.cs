@@ -83,7 +83,7 @@ namespace Server.Services
 
         public void Update(User userParam, string password = null)
         {
-            var user = _context.users.Find(userParam.ID);
+            var user = _context.users.Find(userParam.Id);
 
             if (user == null)
                 throw new AppException("User not found");

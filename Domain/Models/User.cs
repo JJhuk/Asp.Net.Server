@@ -5,12 +5,11 @@ namespace Domain.Models
 {
     public class User
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
+        
         [Required]
-        [Remote(action: "VerifyUserName",controller:"UsersController")]
         public string Username { get; set; }
-        
-        
+
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Eamil Adress")]
         public string Email { get; set; }

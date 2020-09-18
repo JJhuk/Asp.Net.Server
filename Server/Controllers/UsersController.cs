@@ -16,9 +16,10 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [Authorize]
-    [Route("[controller]")]
-    public class UsersController : Controller
+    [Authorize]    
+    [ApiController]
+    [Route("[controller]")] 
+    public class UsersController : ControllerBase
     {
         private readonly AppSettings _appSettings;
         private readonly IMapper _mapper;
@@ -49,7 +50,7 @@ namespace Server.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.ID.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -61,7 +62,7 @@ namespace Server.Controllers
             // return basic user info (without password) and token to store client side
             return Ok(new
             {
-                Id = user.ID,
+                Id = user.Id,
                 user.Username,
                 user.Email,
                 Token = tokenString
@@ -83,7 +84,7 @@ namespace Server.Controllers
             }
             else
             {
-                foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors))
+                foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
                 {
                     throw new AppException(error.ToString());
                 }
@@ -111,7 +112,7 @@ namespace Server.Controllers
             return Ok(userDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
@@ -124,7 +125,7 @@ namespace Server.Controllers
         {
             // map dto to entity and set id
             var user = _mapper.Map<User>(userDto);
-            user.ID = id;
+            user.Id = id;
 
             try
             {
@@ -150,7 +151,7 @@ namespace Server.Controllers
         [AcceptVerbs("GET", "POST")]
         public IActionResult VerifyUserName(string userName)
         {
-            return !_userService.VerifyUserName(userName) ? Json($"Username ${userName} is already taken") : Json(true);
+            return Ok(!_userService.VerifyUserName(userName) ? (object) $"Username ${userName} is already taken" : true);
         }
     }
 }
