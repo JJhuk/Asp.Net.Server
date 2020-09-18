@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Domain.Models;
 using Server.Dtos;
-using Server.Models;
 
 namespace Server.Helpers
 {

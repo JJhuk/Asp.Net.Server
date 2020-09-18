@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Domain;
+using Domain.Models;
 using Server.Helpers;
-using Server.Models;
 
 namespace Server.Services
 {

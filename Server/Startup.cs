@@ -1,5 +1,6 @@
 using System.Text;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Server.Helpers;
-using Server.Models;
 using Server.Services;
 
 namespace Server
