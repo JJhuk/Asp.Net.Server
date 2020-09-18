@@ -29,7 +29,7 @@ namespace Server
         {
             services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
             services.AddMvc();
-            services.AddAutoMapper(typeof(UserContext));
+            services.AddAutoMapper(config => config.AddProfile<AutoMapperProfile>());
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

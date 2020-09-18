@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
@@ -74,15 +75,30 @@ namespace Server.Controllers
             // map dto to entity
             var user = _mapper.Map<User>(userDto);
 
+            TryValidateModel(user, nameof(user));
+
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("Pass!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+            else
+            {
+                foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors))
+                {
+                    throw new AppException(error.ToString());
+                }
+            }
+                
+            
             try
             {
-                // save 
+                // save  
                 _userService.Create(user, userDto.Password);
                 return Ok();
             }
             catch (AppException ex)
             {
-                // return error message if there was an exception
+                // return error message ifz there was an exception
                 return BadRequest(ex.Message);
             }
         }
@@ -128,6 +144,13 @@ namespace Server.Controllers
         {
             _userService.Delete(id);
             return Ok();
+        }
+
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyUserName(string userName)
+        {
+            return !_userService.VerifyUserName(userName) ? Json($"Username ${userName} is already taken") : Json(true);
         }
     }
 }

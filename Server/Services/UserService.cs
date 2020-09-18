@@ -6,6 +6,7 @@ using System.Text;
 using Domain;
 using Domain.Models;
 using Server.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Services
 {
@@ -17,6 +18,8 @@ namespace Server.Services
         User Create(User user, string password);
         void Update(User user, string password = null);
         void Delete(int id);
+
+        bool VerifyUserName(string userName);
     }
 
     public class UserService : IUserService
@@ -111,14 +114,15 @@ namespace Server.Services
         public void Delete(int id)
         {
             var user = _context.users.Find(id);
-            if (user != null)
-            {
-                _context.users.Remove(user);
-                _context.SaveChanges();
-            }
+            if (user == null) return;
+            _context.users.Remove(user);
+            _context.SaveChanges();
         }
 
-        // private helper methods
+        public bool VerifyUserName(string userName)
+        {
+            return _context.Find<string>(userName) == null;
+        }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -135,7 +139,8 @@ namespace Server.Services
 
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) 
+                throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
             if (storedHash.Length != 64)
@@ -146,9 +151,11 @@ namespace Server.Services
             using (var hmac = new HMACSHA512(storedSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                for (var i = 0; i < computedHash.Length; i++)
-                    if (computedHash[i] != storedHash[i])
-                        return false;
+                
+                if (computedHash.Where((t, i) => t != storedHash[i]).Any())
+                {
+                    return false;
+                }
             }
 
             return true;
