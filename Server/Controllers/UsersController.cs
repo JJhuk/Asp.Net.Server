@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -76,20 +77,10 @@ namespace Server.Controllers
             // map dto to entity
             var user = _mapper.Map<User>(userDto);
 
-            TryValidateModel(user, nameof(user));
-
-            if (ModelState.IsValid)
+            foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
             {
-                Console.WriteLine("Pass!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                throw new AppException(error.ToString());
             }
-            else
-            {
-                foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
-                {
-                    throw new AppException(error.ToString());
-                }
-            }
-                
             
             try
             {

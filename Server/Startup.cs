@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using Server.Helpers;
 using Server.Services;
 
@@ -27,9 +28,13 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
+            //services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
+            services.AddDbContext<UserContext>(
+                options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                    x=> x.MigrationsAssembly("Server")));
             services.AddControllers();
             services.AddAutoMapper(config => config.AddProfile<AutoMapperProfile>());
+
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

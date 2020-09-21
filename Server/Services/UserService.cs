@@ -43,11 +43,9 @@ namespace Server.Services
                 return null;
 
             // check if password is correct
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
+            return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
 
             // authentication successful
-            return user;
         }
 
         public IEnumerable<User> GetAll()
@@ -74,6 +72,7 @@ namespace Server.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.CreatedDateTime = DateTime.Now;
 
             _context.users.Add(user);
             _context.SaveChanges();

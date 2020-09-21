@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Domain.Models
@@ -15,6 +16,9 @@ namespace Domain.Models
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        
         public bool IsDeleted { get; set; } = false;
+        
+        public DateTime CreatedDateTime { get; set; }
     }
 } 
