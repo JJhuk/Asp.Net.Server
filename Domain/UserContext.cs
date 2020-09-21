@@ -10,9 +10,6 @@ namespace Domain
         }
 
         public DbSet<User> users { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=userdb;Username=postgres;Password=password")
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
+
 }

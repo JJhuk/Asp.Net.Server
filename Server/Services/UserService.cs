@@ -6,7 +6,6 @@ using System.Text;
 using Domain;
 using Domain.Models;
 using Server.Helpers;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Services
 {
