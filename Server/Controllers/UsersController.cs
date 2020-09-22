@@ -39,10 +39,15 @@ namespace Server.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] UserDto userDto)
         {
-            var user = _userService.Authenticate(userDto.UserName, userDto.Password);
+            if (string.IsNullOrEmpty(userDto.UserName) || string.IsNullOrEmpty(userDto.Password))
+                return BadRequest();
 
-            if (user == null)
+            if (_userService.UserNameExists(userDto.UserName))
                 return Unauthorized();
+            
+            if ( _userService.Authenticate(userDto.UserName, userDto.Password))
+                return Unauthorized();
+            
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -50,7 +55,7 @@ namespace Server.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, userDto.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -59,12 +64,11 @@ namespace Server.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            // return basic user info (without password) and token to store client side
             return Ok(new
             {
-                user.Id,
-                user.Username,
-                user.Email,
+                userDto.Id,
+                userDto.UserName,
+                userDto.Email,
                 Token = tokenString
             });
         }
@@ -73,7 +77,6 @@ namespace Server.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserDto userDto)
         {
-            // map dto to entity
             var user = _mapper.Map<User>(userDto);
 
             foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
@@ -83,13 +86,11 @@ namespace Server.Controllers
             
             try
             {
-                // save  
                 _userService.Create(user, userDto.Password);
                 return Ok();
             }
             catch (AppException ex)
             {
-                // return error message ifz there was an exception
                 return BadRequest(ex.Message);
             }
         }
@@ -113,19 +114,15 @@ namespace Server.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UserDto userDto)
         {
-            // map dto to entity and set id
             var user = _mapper.Map<User>(userDto);
             user.Id = id;
-
             try
             {
-                // save 
                 _userService.Update(user, userDto.Password);
                 return Ok();
             }
             catch (AppException ex)
             {
-                // return error message if there was an exception
                 return BadRequest(ex.Message);
             }
         }

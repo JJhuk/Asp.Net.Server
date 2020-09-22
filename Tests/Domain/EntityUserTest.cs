@@ -24,10 +24,10 @@ namespace Tests.Domain
 
         private async Task CreateUser()
         {
-            _db.Users.Add(new User());
+            await _db.Users.AddAsync(new User());
             await _db.SaveChangesAsync();
         }
-
+        
         [Fact]
         public async Task UserEntity_Should_HasAuditFields_When_AuditIsCreated()
         {

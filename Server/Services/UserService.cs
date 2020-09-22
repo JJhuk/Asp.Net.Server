@@ -11,7 +11,7 @@ namespace Server.Services
 {
     public interface IUserService
     {
-        User Authenticate(string username, string password);
+        bool Authenticate(string username, string password);
         IEnumerable<User> GetAll();
         User GetById(int id);
         User Create(User user, string password);
@@ -19,6 +19,7 @@ namespace Server.Services
         void Delete(int id);
 
         bool VerifyUserName(string userName);
+        bool UserNameExists(string userName);
     }
 
     public class UserService : IUserService
@@ -30,21 +31,11 @@ namespace Server.Services
             _context = context;
         }
 
-        public User Authenticate(string username, string password)
+        public bool Authenticate(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return null;
-
-            var user = _context.Users.SingleOrDefault(x => x.Username == username);
-
-            // check if username exists
-            if (user == null)
-                return null;
-
-            // check if password is correct
-            return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
-
-            // authentication successful
+            var user = _context.Users.Single(x => x.Username == username);
+            
+            return VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
         }
 
         public IEnumerable<User> GetAll()
@@ -59,7 +50,6 @@ namespace Server.Services
 
         public User Create(User user, string password)
         {
-            // validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
@@ -81,25 +71,21 @@ namespace Server.Services
 
         public void Update(User userParam, string password = null)
         {
-            var user = _context.Users.Find(userParam.Id);
+            bool IsNameAlreadyTaken(int userId)
+            {
+                return _context.Users.Any(x => x.Id != userId && x.Username == userParam.Username);
+            }
 
-            if (user == null)
-                throw new AppException("User not found");
+            var user = _context.Users.Single(u => u.Id == userParam.Id);
+            if (IsNameAlreadyTaken(user.Id))
+                throw new AppException("Username " + userParam.Username + " is already taken");
 
-            if (userParam.Username != user.Username)
-                // username has changed so check if the new username is already taken
-                if (_context.Users.Any(x => x.Username == userParam.Username))
-                    throw new AppException("Username " + userParam.Username + " is already taken");
-
-            // update user properties
             user.Email = userParam.Email;
             user.Username = userParam.Username;
 
-            // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
             {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+                CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
@@ -113,13 +99,17 @@ namespace Server.Services
         {
             var user = _context.Users.Find(id);
             if (user == null) return;
-            _context.Users.Remove(user);
-            _context.SaveChanges();
+            user.IsDeleted = true;
         }
 
         public bool VerifyUserName(string userName)
         {
-            return _context.Find<string>(userName) == null;
+            return _context.Users.Any(x => x.Username == userName);
+        }
+
+        public bool UserNameExists(string userName)
+        {
+            return _context.Users.Any(user => user.Username == userName);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -137,19 +127,21 @@ namespace Server.Services
 
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) 
+            const string passwordHash = "passwordHash";
+
+            if (password == null)
                 throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
             if (storedHash.Length != 64)
-                throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+                throw new ArgumentException("Invalid length of password hash (64 bytes expected).", passwordHash);
             if (storedSalt.Length != 128)
-                throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+                throw new ArgumentException("Invalid length of password salt (128 bytes expected).", passwordHash);
 
             using (var hmac = new HMACSHA512(storedSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                
+
                 if (computedHash.Where((t, i) => t != storedHash[i]).Any())
                 {
                     return false;
