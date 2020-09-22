@@ -35,7 +35,7 @@ namespace Server.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.users.SingleOrDefault(x => x.Username == username);
+            var user = _context.Users.SingleOrDefault(x => x.Username == username);
 
             // check if username exists
             if (user == null)
@@ -49,12 +49,12 @@ namespace Server.Services
 
         public IEnumerable<User> GetAll()
         {
-            return _context.users;
+            return _context.Users;
         }
 
         public User GetById(int id)
         {
-            return _context.users.Find(id);
+            return _context.Users.Find(id);
         }
 
         public User Create(User user, string password)
@@ -63,7 +63,7 @@ namespace Server.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            if (_context.users.Any(x => x.Username == user.Username))
+            if (_context.Users.Any(x => x.Username == user.Username))
                 throw new AppException("Username " + user.Username + " is already taken");
 
             byte[] passwordHash, passwordSalt;
@@ -73,7 +73,7 @@ namespace Server.Services
             user.PasswordSalt = passwordSalt;
             user.CreatedDateTime = DateTime.Now;
 
-            _context.users.Add(user);
+            _context.Users.Add(user);
             _context.SaveChanges();
 
             return user;
@@ -81,14 +81,14 @@ namespace Server.Services
 
         public void Update(User userParam, string password = null)
         {
-            var user = _context.users.Find(userParam.Id);
+            var user = _context.Users.Find(userParam.Id);
 
             if (user == null)
                 throw new AppException("User not found");
 
             if (userParam.Username != user.Username)
                 // username has changed so check if the new username is already taken
-                if (_context.users.Any(x => x.Username == userParam.Username))
+                if (_context.Users.Any(x => x.Username == userParam.Username))
                     throw new AppException("Username " + userParam.Username + " is already taken");
 
             // update user properties
@@ -105,15 +105,15 @@ namespace Server.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            _context.users.Update(user);
+            _context.Users.Update(user);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var user = _context.users.Find(id);
+            var user = _context.Users.Find(id);
             if (user == null) return;
-            _context.users.Remove(user);
+            _context.Users.Remove(user);
             _context.SaveChanges();
         }
 

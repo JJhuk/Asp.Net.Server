@@ -9,7 +9,7 @@ namespace Domain
         {
         }
 
-        public DbSet<User> users { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 
 }

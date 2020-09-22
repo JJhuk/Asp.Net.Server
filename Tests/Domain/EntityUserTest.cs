@@ -1,29 +1,30 @@
 ﻿using System.Threading.Tasks;
 using Domain;
+using Domain.Models;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Tests.Domain.TestFixture;
 using Xunit;
 
 namespace Tests.Domain
 {
     public class EntityUserTest
     {
-        private readonly UserTestDb _db;
+        private readonly UserContext _db;
         
         public EntityUserTest()
         {
             var option = new DbContextOptionsBuilder<UserContext>()
                 .UseInMemoryDatabase("Test")
                 .Options;
-            _db = new UserDb(option);
+            
+            _db = new UserContext(option);
             _db.Database.EnsureDeleted();
             _db.Database.EnsureCreated();
         }
 
         private async Task CreateUser()
         {
-            _db.Users.Add(new TestUser());
+            _db.Users.Add(new User());
             await _db.SaveChangesAsync();
         }
 
@@ -33,10 +34,8 @@ namespace Tests.Domain
             await CreateUser();
 
             var userCount = await _db.Users.AsQueryable().CountAsync();
-            var users = await _db.Users.AsQueryable().FirstAsync();
 
             userCount.Should().Be(1);
-            users.Name.Should().NotBeNullOrEmpty();
         }
         
     }
