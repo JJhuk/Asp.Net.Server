@@ -63,7 +63,7 @@ namespace Server.Controllers
             return Ok(new
             {
                 Id = user.Id,
-                user.Username,
+                Username = user.Username,
                 user.Email,
                 Token = tokenString
             });
@@ -147,11 +147,5 @@ namespace Server.Controllers
             return Ok();
         }
 
-
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyUserName(string userName)
-        {
-            return Ok(!_userService.VerifyUserName(userName) ? (object) $"Username ${userName} is already taken" : true);
-        }
     }
 }

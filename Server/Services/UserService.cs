@@ -6,7 +6,6 @@ using System.Text;
 using Domain;
 using Domain.Models;
 using Server.Helpers;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Services
 {
@@ -18,8 +17,6 @@ namespace Server.Services
         User Create(User user, string password);
         void Update(User user, string password = null);
         void Delete(int id);
-
-        bool VerifyUserName(string userName);
     }
 
     public class UserService : IUserService
@@ -38,16 +35,10 @@ namespace Server.Services
 
             var user = _context.users.SingleOrDefault(x => x.Username == username);
 
-            // check if username exists
             if (user == null)
                 return null;
 
-            // check if password is correct
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
-
-            // authentication successful
-            return user;
+            return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
         }
 
         public IEnumerable<User> GetAll()
@@ -89,11 +80,9 @@ namespace Server.Services
                 throw new AppException("User not found");
 
             if (userParam.Username != user.Username)
-                // username has changed so check if the new username is already taken
                 if (_context.users.Any(x => x.Username == userParam.Username))
                     throw new AppException("Username " + userParam.Username + " is already taken");
 
-            // update user properties
             user.Email = userParam.Email;
             user.Username = userParam.Username;
 
@@ -117,11 +106,6 @@ namespace Server.Services
             if (user == null) return;
             _context.users.Remove(user);
             _context.SaveChanges();
-        }
-
-        public bool VerifyUserName(string userName)
-        {
-            return _context.Find<string>(userName) == null;
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
