@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Domain;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Server.Helpers;
 using Server.Services;
 
@@ -31,6 +35,20 @@ namespace Server
                 options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                     x=> x.MigrationsAssembly("Server")));
             services.AddControllers();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "HomeWork API",
+                });
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+            
             services.AddAutoMapper(config => config.AddProfile<AutoMapperProfile>());
 
 
@@ -54,12 +72,25 @@ namespace Server
                     };
                 });
             services.AddScoped<IUserService, UserService>();
+            
+            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+            app.UseStaticFiles();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.InjectStylesheet("/swagger-ui/theme-material.css");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MY API V1");
+                c.RoutePrefix = string.Empty;
+            });
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

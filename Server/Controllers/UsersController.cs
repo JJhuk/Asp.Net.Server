@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -35,8 +36,15 @@ namespace Server.Controllers
             _mapper = mapper;
             _appSettings = appSettings.Value;
         }
-
+        /// <summary>
+        /// Authenticate account
+        /// </summary>
+        /// <param name="userDto">로그인 시 입력하는 유저 정보</param>
+        /// <returns></returns>
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] UserDto userDto)
         {
@@ -76,6 +84,8 @@ namespace Server.Controllers
         }
 
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("register")]
         public async Task <IActionResult> Register([FromBody] UserDto userDto)
         {
@@ -97,23 +107,42 @@ namespace Server.Controllers
             }
         }
 
+        /// <summary>
+        /// 모든 유저들을 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IList<UserDto>> GetAll()
         {
             var users = _userService.GetAll();
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
         }
-
+        
+        /// <summary>
+        /// id에 해당하는 유저를 가져옵니다.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<UserDto> GetById(int id)
         {
             var user = _userService.GetById(id);
             var userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
+        /// <summary>
+        /// id에 해당하는 유저를 수정합니다.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update(int id, [FromBody] UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
@@ -130,17 +159,11 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);
             return Ok();
-        }
-
-
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyUserName(string userName)
-        {
-            return Ok(!_userService.VerifyUserName(userName) ? (object) $"Username ${userName} is already taken" : true);
         }
     }
 }

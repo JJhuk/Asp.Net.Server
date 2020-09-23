@@ -20,7 +20,6 @@ namespace Server.Services
         void Update(User user, string password = null);
         void Delete(int id);
         User GetByUsername(string username);
-        bool VerifyUserName(string userName);
         Task<bool> UserNameExists(string userName);
     }
 
