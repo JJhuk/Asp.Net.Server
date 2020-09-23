@@ -37,7 +37,7 @@
 - Entity Framework Core : Database에 대한 ORM 프레임워크
     - [x]  Migration 기능을 이용하여 테이블을 점진적으로 생성/변경해나가기
     - [ ]  Development 환경에서만 Sensitive Logging 활성화 할 것
-    - [ ]  Lazy Proxy 활성화할 것
+    - [x]  Lazy Proxy 활성화할 것
     - [ ]  모든 엔티티에 대해서 CreatedAt, UpdatedAt을 구현하고 이를 DbContext의 Hooking하여 자동적으로 업데이트 되도록 할 것
     - [x]  모든 엔티티에 대해서 IsDeleted 프로퍼티가 구현어야함
         - [ ]  Global Filter를 적용하여 기본 쿼리 결과에 대해서 IsDeleted True일 때 제외시킬 것

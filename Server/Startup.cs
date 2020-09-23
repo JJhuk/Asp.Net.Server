@@ -31,24 +31,29 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
+
             services.AddDbContext<UserContext>(
-                options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                    x=> x.MigrationsAssembly("Server")));
+                options => options
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("Server"))
+            );
+
             services.AddControllers();
-            
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1",new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "HomeWork API",
                 });
-                
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            
+
             services.AddAutoMapper(config => config.AddProfile<AutoMapperProfile>());
 
 
@@ -72,9 +77,6 @@ namespace Server
                     };
                 });
             services.AddScoped<IUserService, UserService>();
-            
-            
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -90,7 +92,7 @@ namespace Server
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MY API V1");
                 c.RoutePrefix = string.Empty;
             });
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
