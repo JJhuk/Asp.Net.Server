@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/JJhuk/Server/workflows/.Net Core/badge.svg)](https://github.com/JJhuk/Server/actions)
+
 ### 서버
 
 - .NET Core 3.1 & C# 8.0 기능 적극 사용
