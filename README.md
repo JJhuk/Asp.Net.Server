@@ -1,6 +1,6 @@
 ### 서버
 
-- [ ]  .NET Core 3.1 & C# 8.0 기능 적극 사용
+- .NET Core 3.1 & C# 8.0 기능 적극 사용
 - C# 프로젝트 구조
     - API 프로젝트 (ASP.NET Core)
     - Domain 프로젝트 (EntityFramework)
