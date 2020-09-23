@@ -37,7 +37,7 @@ namespace Server.Services
         {
             var user = _context.Users.Single(x => x.Username == username);
             
-            return VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
+            return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
         }
 
         public IEnumerable<User> GetAll()
