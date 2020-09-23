@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -37,17 +38,18 @@ namespace Server.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UserDto userDto)
+        public async Task<IActionResult> Authenticate([FromBody] UserDto userDto)
         {
             if (string.IsNullOrEmpty(userDto.UserName) || string.IsNullOrEmpty(userDto.Password))
                 return BadRequest();
 
-            if (_userService.UserNameExists(userDto.UserName))
+            if (!await _userService.UserNameExists(userDto.UserName))
                 return Unauthorized();
             
-            if ( _userService.Authenticate(userDto.UserName, userDto.Password))
+            if ( !_userService.Authenticate(userDto.UserName, userDto.Password))
                 return Unauthorized();
-            
+
+            var user = _userService.GetByUsername(userDto.UserName);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -55,7 +57,7 @@ namespace Server.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, userDto.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -66,16 +68,16 @@ namespace Server.Controllers
 
             return Ok(new
             {
-                userDto.Id,
-                userDto.UserName,
-                userDto.Email,
+                user.Id,
+                user.Username,
+                user.Email,
                 Token = tokenString
             });
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserDto userDto)
+        public async Task <IActionResult> Register([FromBody] UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
 
@@ -86,7 +88,7 @@ namespace Server.Controllers
             
             try
             {
-                _userService.Create(user, userDto.Password);
+                await _userService.Create(user, userDto.Password);
                 return Ok();
             }
             catch (AppException ex)

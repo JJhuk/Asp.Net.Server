@@ -34,7 +34,7 @@ namespace Tests
             //Then
             result.Should().BeFalse();
         }
-
+        
         [Fact]
         public void Authenticate_Should_ReturnTrue_When_PasswordCorrect()
         {

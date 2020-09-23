@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Domain;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Server.Helpers;
 
 namespace Server.Services
@@ -14,12 +16,12 @@ namespace Server.Services
         bool Authenticate(string username, string password);
         IEnumerable<User> GetAll();
         User GetById(int id);
-        User Create(User user, string password);
+        Task<User> Create(User user, string password);
         void Update(User user, string password = null);
         void Delete(int id);
-
+        User GetByUsername(string username);
         bool VerifyUserName(string userName);
-        bool UserNameExists(string userName);
+        Task<bool> UserNameExists(string userName);
     }
 
     public class UserService : IUserService
@@ -48,14 +50,15 @@ namespace Server.Services
             return _context.Users.Find(id);
         }
 
-        public User Create(User user, string password)
+        public async Task<User> Create(User user, string password)
         {
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            if (_context.Users.Any(x => x.Username == user.Username))
+            
+            if (await _context.Users.AnyAsync(x => x.Username == user.Username))
                 throw new AppException("Username " + user.Username + " is already taken");
-
+            
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
@@ -63,8 +66,8 @@ namespace Server.Services
             user.PasswordSalt = passwordSalt;
             user.CreatedDateTime = DateTime.Now;
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
             return user;
         }
@@ -102,14 +105,19 @@ namespace Server.Services
             user.IsDeleted = true;
         }
 
+        public User GetByUsername(string username)
+        {
+            return _context.Users.Single(x => x.Username == username);
+        }
+
         public bool VerifyUserName(string userName)
         {
             return _context.Users.Any(x => x.Username == userName);
         }
 
-        public bool UserNameExists(string userName)
+        public Task<bool> UserNameExists(string userName)
         {
-            return _context.Users.Any(user => user.Username == userName);
+            return _context.Users.AnyAsync(user => user.Username == userName);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
