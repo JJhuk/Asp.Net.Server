@@ -1,5 +1,5 @@
 
-[![Actions Status](https://github.com/JJhuk/Server/workflows/dotnet-core/badge.svg)](https://github.com/JJhuk/Server/actions)
+[![dotnet-core Actions Status](https://github.com/JJhuk/Server/workflows/dotnet-core/badge.svg)](https://github.com/JJhuk/Server/actions)
 
 ### 서버
 
