@@ -21,8 +21,11 @@ namespace Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
+            _environment = environment;
             Configuration = configuration;
         }
 
@@ -33,11 +36,16 @@ namespace Server
             //services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
 
             services.AddDbContext<UserContext>(
-                options => options
-                    .UseLazyLoadingProxies()
-                    .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                        x => x.MigrationsAssembly("Server"))
-            );
+                options =>
+                {
+                    options
+                        .UseLazyLoadingProxies()
+                        .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                            x => x.MigrationsAssembly("Server"));
+
+                    if (_environment.IsDevelopment())
+                        options.EnableSensitiveDataLogging();
+                });
 
             services.AddControllers();
 

@@ -22,7 +22,7 @@ namespace Tests.Domain
             _db.Database.EnsureCreated();
         }
 
-        private async Task CreateUser()
+        private async Task CreateUser()    
         {
             await _db.Users.AddAsync(new User());
             await _db.SaveChangesAsync();

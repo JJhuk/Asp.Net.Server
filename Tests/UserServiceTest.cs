@@ -30,7 +30,7 @@ namespace Tests
 
             //When
             var result = _userService.Authenticate("Jamie", "PASSWORD");
-
+            
             //Then
             result.Should().BeFalse();
         }
@@ -54,7 +54,7 @@ namespace Tests
         {
             //given
             var random = new Random();
-            var userCount = 10;
+            const int userCount = 10;
             for (var i = 0; i < userCount; i++)
             {
                 await _db.Db.Users.AddAsync(new User
@@ -172,6 +172,7 @@ namespace Tests
             //then
             user.Should().NotBeNull();
             user.IsDeleted.Should().BeTrue();
+            _userService.GetAll().ToHashSet().Count.Should().Be(0);
         }
     }
 }

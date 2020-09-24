@@ -101,7 +101,8 @@ namespace Server.Services
         {
             var user = _context.Users.Find(id);
             if (user == null) return;
-            user.IsDeleted = true;
+            _context.Users.Remove(user);
+            _context.SaveChanges();
         }
 
         public User GetByUsername(string username)
@@ -121,7 +122,8 @@ namespace Server.Services
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) 
+                throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
 
