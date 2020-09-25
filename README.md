@@ -50,4 +50,4 @@
 ### Devops
 
 - [x]  Github Actions를 통해서 커밋별 Build / Test 실행할 것
-- [ ]  [ASP.NET](http://asp.NET) Core를 Dockerfile로 만들어서 Github Packages에 배포할 것
+- [x]  [ASP.NET](http://asp.NET) Core를 Dockerfile로 만들어서 Github Packages에 배포할 것
