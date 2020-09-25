@@ -35,17 +35,19 @@ namespace Server
         {
             //services.AddDbContext<UserContext>(x => x.UseInMemoryDatabase("TestDb"));
 
-            services.AddDbContext<UserContext>(
-                options =>
-                {
-                    options
-                        .UseLazyLoadingProxies()
-                        .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                            x => x.MigrationsAssembly("Server"));
+            services.AddSingleton(provider =>
+            {
+                var builder = new DbContextOptionsBuilder<UserContext>();
+                builder
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
 
-                    if (_environment.IsDevelopment())
-                        options.EnableSensitiveDataLogging();
-                });
+                if (provider.GetRequiredService<IWebHostEnvironment>().IsDevelopment())
+                    builder.EnableSensitiveDataLogging();
+
+                return builder.Options;
+            });
+            services.AddDbContext<UserContext>();
 
             services.AddControllers();
 

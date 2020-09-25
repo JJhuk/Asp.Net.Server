@@ -8,25 +8,27 @@
   &lt;PhysicalFolder Path="C:\Users\SHIFTUP\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.4" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=20ab8c18_002D5d5f_002D403b_002Da34c_002D627daa888ac4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="VTESt2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.SampleTest.DoSomething_Shoud_ReturnHelloWorld_When_CallDoSomethingOfInstance&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Domain.EntityUserTest.UserEntity_Should_HasAuditFields_When_AuditIsCreated&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Domain.EntityUserTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.UserServiceTest.Create_Should_NotMakeUser_When_InutSameUserName&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.SampleTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.UserServiceTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4ee9c391_002D7451_002D45eb_002Da471_002D45be4f0ed123/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_Should_NotMakeUser_When_InutSameUserName" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4ee9c391_002D7451_002D45eb_002Da471_002D45be4f0ed123/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create_Should_NotMakeUser_When_InutSameUserName" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.UserServiceTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.SampleTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Domain.EntityUserTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.UserIntegrationTest.GetUserData&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.foo&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.hello&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.Hello&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.Hello2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c08dd5f5_002D2e7f_002D445c_002D8c72_002D8b9e4fee5e8e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UserServiceTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b080f8bb_002D0754_002D4949_002Da4d7_002D01a3eb36c496/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="hello" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.hello&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c08dd5f5_002D2e7f_002D445c_002D8c72_002D8b9e4fee5e8e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="UserServiceTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.UserServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.UserIntegrationTest.GetUserData&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
