@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Domain;
@@ -20,7 +21,7 @@ namespace Tests.Integration
         {
             // Given 
             SUT.ReplaceSqliteInMemoryDbContext<UserContext>();
-            
+
             // When
             var response = await SUT
                 .Resource("/Users/register")
@@ -28,39 +29,40 @@ namespace Tests.Integration
                 {
                     UserName = "HELLO",
                     Email = "HELLO@gmail.com",
-                    Password = "password",
+                    Password = "password"
                 })
                 .PostAsync();
-            
+
             // Then
             response.ShouldBeOk();
         }
+
         [Fact]
         public async Task Hello2()
         {
             // Given 
-            SUT.ReplaceSqliteInMemoryDbContext<UserContext>()
+            var client = SUT.ReplaceSqliteInMemoryDbContext<UserContext>()
                 .SetupFixture<UserContext>(async context =>
                 {
                     context.Users.Add(new User
                     {
                         Email = "test@test.com",
-                        Username = "test",
+                        Username = "test"
                     });
                     await context.SaveChangesAsync();
                 })
                 .AllowAuthentication(JwtBearerDefaults.AuthenticationScheme, new ClaimsIdentity(new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, "test")
-                }, "Bearer"));
-            
+                }, "Bearer"))
+                .NoUserAuthentication()
+                .DenyAuthentication()
+                .CreateClient();
+
             // When
-            var response = await SUT
-                .Resource("/Users")
-                .GetAsync();
-            
+            var hello = await client.GetAsync("/Users");
             // Then
-            response.ShouldBeOk();
+            hello.ShouldBe(HttpStatusCode.OK);
         }
     }
 }
