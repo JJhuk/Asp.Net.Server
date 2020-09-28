@@ -8,9 +8,7 @@
   &lt;PhysicalFolder Path="C:\Users\SHIFTUP\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.4" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=127852b3_002D76cb_002D4059_002D92d5_002Dae36bff26203/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Scenario_1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.MockingIntegrationTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\Users\SHIFTUP\source\repos\Server\Tests" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2a38d155_002D5834_002D41a9_002D84e6_002Dd8435916f4c7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Scenario_1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
