@@ -37,7 +37,7 @@ namespace Domain
 
         private void OnSaveChanges()
         {
-            foreach (var entry in ChangeTracker.Entries<User>())
+            foreach (var entry in ChangeTracker.Entries<IEntity>())
             {
                 switch (entry.State)
                 {
@@ -50,18 +50,15 @@ namespace Domain
                     case EntityState.Unchanged:
                         break;
                     case EntityState.Modified:
-                        if (entry.GetType().GetProperty("CreatedAt") != null)
-                            entry.Property("createdAt").IsModified = false;
+                        entry.Entity.UpdatedAt = DateTime.Now;
                         break;
                     case EntityState.Added:
-                        if (entry.GetType().GetProperty("CreatedAt") != null)
-                            entry.Property("createdAt").CurrentValue = DateTime.Now;
+                        entry.Entity.CreatedAt = DateTime.Now;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
             }
         }
     }

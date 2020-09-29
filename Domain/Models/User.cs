@@ -3,7 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
-    public class User
+    public interface IEntity
+    {
+        bool IsDeleted { get; set; }
+        DateTime? CreatedAt { get; set; }
+        DateTime UpdatedAt { get; set; }
+    }
+
+    public class User : IEntity
     {
         public int Id { get; set; }
 
