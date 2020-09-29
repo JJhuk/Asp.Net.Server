@@ -12,8 +12,8 @@ namespace Tests
 {
     public class UserServiceTest
     {
-        private readonly UserService _userService;
         private readonly TestUserContext _db;
+        private readonly UserService _userService;
 
         public UserServiceTest()
         {
@@ -25,22 +25,20 @@ namespace Tests
         public void Authenticate_Should_ReturnFalse_When_PasswordIncorrect()
         {
             //given
-            var a = new User {Username = "Jamie", Email = "Jamie@gmail.com"};
-            _userService.Create(a, "password");
+            CreateDefaultUser();
 
             //When
             var result = _userService.Authenticate("Jamie", "PASSWORD");
-            
+
             //Then
             result.Should().BeFalse();
         }
-        
+
         [Fact]
         public void Authenticate_Should_ReturnTrue_When_PasswordCorrect()
         {
             //given
-            var a = new User {Username = "Jamie", Email = "Jamie@gmail.com"};
-            _userService.Create(a, "password");
+            CreateDefaultUser();
 
             //When
             var result = _userService.Authenticate("Jamie", "password");
@@ -56,20 +54,19 @@ namespace Tests
             var random = new Random();
             const int userCount = 10;
             for (var i = 0; i < userCount; i++)
-            {
                 await _db.Db.Users.AddAsync(new User
                 {
                     Username = RandomGenerator.RandomString(random.Next(5, 7)),
                     Email = RandomGenerator.RandomString(random.Next(5, 7)) + "@gmail.com",
                     PasswordHash = new byte[32],
-                    PasswordSalt = new byte[16],
+                    PasswordSalt = new byte[16]
                 });
-            }
+
             await _db.Db.SaveChangesAsync();
 
             //When
             var users = _userService.GetAll();
-            
+
             //Then
             users.Select(user => user.Username).ToHashSet().Should().HaveCount(userCount);
         }
@@ -118,36 +115,35 @@ namespace Tests
         public void Update_Should_UpdateUserData_When_Input()
         {
             //given
-            const string beforeName = "MyNameA";
-            const string beforeEmail = "email.gmail.com";
+            var user = CreateDefaultUser();
+            var beforeName = user.Username;
+            var beforeEmail = user.Email;
+
             const string afterName = "MyNameB";
             const string afterEmail = "email@naver.com";
 
-            var a = new User {Username = beforeName, Email = beforeEmail};
-            _userService.Create(a, "password");
-
             //When
-            a.Username = afterName;
-            a.Email = afterEmail;
-            _userService.Update(a);
+            user.Username = afterName;
+            user.Email = afterEmail;
+            _userService.Update(user);
 
             //Then
-            _userService.GetById(a.Id).Username.Should().NotBe(beforeName);
-            _userService.GetById(a.Id).Username.Should().Be(afterName);
-            
-            _userService.GetById(a.Id).Email.Should().NotBe(beforeEmail);
-            _userService.GetById(a.Id).Email.Should().Be(afterEmail);
+            _userService.GetById(user.Id).Username.Should().NotBe(beforeName);
+            _userService.GetById(user.Id).Username.Should().Be(afterName);
 
+            _userService.GetById(user.Id).Email.Should().NotBe(beforeEmail);
+            _userService.GetById(user.Id).Email.Should().Be(afterEmail);
         }
 
         [Fact]
         public void VerifyUserName_Should_ReturnBool_When_VerifyUserName()
         {
             //given
-            const string username = "Dabby";
             const string wrongUsername = "hhhh";
+            var user = CreateDefaultUser();
+            var username = user.Username;
 
-            var user = new User {Username = username, Email = "Dabby@gmail.com"};
+
             _userService.Create(user, "password");
 
             //when
@@ -163,8 +159,7 @@ namespace Tests
         public void Delete_Should_NotRealDelete_When_CallDelete()
         {
             //given
-            var user = new User {Username = "Jamie", Email = "Jamie@gmail.com"};
-            _userService.Create(user, "password");
+            var user = CreateDefaultUser();
 
             //when
             _userService.Delete(user.Id);
@@ -173,6 +168,30 @@ namespace Tests
             user.Should().NotBeNull();
             user.IsDeleted.Should().BeTrue();
             _userService.GetAll().ToHashSet().Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void UserEntity_Should_UpdateUpdatedAt_When_UserUpdated()
+        {
+            //given
+            var defaultUser = CreateDefaultUser();
+            var curUpdateTime = defaultUser.UpdatedAt;
+            const string changeName = "I'm not Jamie!";
+
+            //when
+            defaultUser.Username = changeName;
+            _userService.Update(defaultUser, "password");
+
+            //then
+            curUpdateTime.Should().NotBe(defaultUser.UpdatedAt);
+        }
+
+        private User CreateDefaultUser()
+        {
+            var user = new User {Username = "Jamie", Email = "Jamie@gmail.com"};
+            _userService.Create(user, "password");
+
+            return user;
         }
     }
 }

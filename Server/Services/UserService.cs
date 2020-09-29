@@ -35,7 +35,7 @@ namespace Server.Services
         public bool Authenticate(string username, string password)
         {
             var user = _context.Users.Single(x => x.Username == username);
-            
+
             return VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
         }
 
@@ -54,10 +54,10 @@ namespace Server.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            
+
             if (await _context.Users.AnyAsync(x => x.Username == user.Username))
                 throw new AppException("Username " + user.Username + " is already taken");
-            
+
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
@@ -110,19 +110,19 @@ namespace Server.Services
             return _context.Users.Single(x => x.Username == username);
         }
 
-        public bool VerifyUserName(string userName)
-        {
-            return _context.Users.Any(x => x.Username == userName);
-        }
-
         public Task<bool> UserNameExists(string userName)
         {
             return _context.Users.AnyAsync(user => user.Username == userName);
         }
 
+        public bool VerifyUserName(string userName)
+        {
+            return _context.Users.Any(x => x.Username == userName);
+        }
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (password == null) 
+            if (password == null)
                 throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
@@ -147,17 +147,11 @@ namespace Server.Services
             if (storedSalt.Length != 128)
                 throw new ArgumentException("Invalid length of password salt (128 bytes expected).", passwordHash);
 
-            using (var hmac = new HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            using var hmac = new HMACSHA512(storedSalt);
 
-                if (computedHash.Where((t, i) => t != storedHash[i]).Any())
-                {
-                    return false;
-                }
-            }
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-            return true;
+            return !computedHash.Where((t, i) => t != storedHash[i]).Any();
         }
     }
 }

@@ -10,6 +10,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Server.Dtos;
@@ -18,26 +19,30 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [Authorize]    
+    [Authorize]
     [ApiController]
-    [Route("[controller]")] 
+    [Route("[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly AppSettings _appSettings;
+        private readonly ILogger<UsersController> _logger;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            ILogger<UsersController> logger)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
+
         /// <summary>
-        /// Authenticate account
+        ///     Authenticate account
         /// </summary>
         /// <param name="userDto">로그인 시 입력하는 유저 정보</param>
         /// <returns></returns>
@@ -48,17 +53,27 @@ namespace Server.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] UserDto userDto)
         {
+            _logger.LogInformation("Authenticate start");
+
             if (string.IsNullOrEmpty(userDto.UserName) || string.IsNullOrEmpty(userDto.Password))
+            {
+                _logger.LogError("UserName or Password Is NullOrEmpty");
                 return BadRequest();
+            }
 
             if (!await _userService.UserNameExists(userDto.UserName))
+            {
+                _logger.LogError("Username is not Exists");
                 return Unauthorized();
-            
-            if ( !_userService.Authenticate(userDto.UserName, userDto.Password))
+            }
+
+            if (!_userService.Authenticate(userDto.UserName, userDto.Password))
+            {
+                _logger.LogError("Password or Username is invalid");
                 return Unauthorized();
+            }
 
             var user = _userService.GetByUsername(userDto.UserName);
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -87,15 +102,15 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("register")]
-        public async Task <IActionResult> Register([FromBody] UserDto userDto)
+        public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
+            _logger.Log(LogLevel.Debug, "register user");
+
             var user = _mapper.Map<User>(userDto);
 
             foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
-            {
                 throw new AppException(error.ToString());
-            }
-            
+
             try
             {
                 await _userService.Create(user, userDto.Password);
@@ -108,20 +123,21 @@ namespace Server.Controllers
         }
 
         /// <summary>
-        /// 모든 유저들을 가져옵니다.
+        ///     모든 유저들을 가져옵니다.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IList<UserDto>> GetAll()
         {
+            _logger.Log(LogLevel.Debug, "Get All Users");
             var users = _userService.GetAll();
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
         }
-        
+
         /// <summary>
-        /// id에 해당하는 유저를 가져옵니다.
+        ///     id에 해당하는 유저를 가져옵니다.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -129,13 +145,14 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<UserDto> GetById(int id)
         {
+            _logger.LogInformation("Get user that id is {0}", id);
             var user = _userService.GetById(id);
             var userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
         /// <summary>
-        /// id에 해당하는 유저를 수정합니다.
+        ///     id에 해당하는 유저를 수정합니다.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="userDto"></param>

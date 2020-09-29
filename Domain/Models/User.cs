@@ -21,6 +21,6 @@ namespace Domain.Models
         public DateTime CreatedDateTime { get; set; }
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
-        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

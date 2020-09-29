@@ -38,6 +38,7 @@ namespace Domain
         private void OnSaveChanges()
         {
             foreach (var entry in ChangeTracker.Entries<User>())
+            {
                 switch (entry.State)
                 {
                     case EntityState.Deleted:
@@ -59,6 +60,9 @@ namespace Domain
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
+                entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+            }
         }
     }
 }
