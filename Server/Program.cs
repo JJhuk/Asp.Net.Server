@@ -17,11 +17,15 @@ namespace Server
                 .ConfigureLogging(builder =>
                 {
                     builder.ClearProviders();
+
                     builder.AddConsole();
                 })
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder
-                    .UseStartup<Startup>()
-                    ; });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                        .UseStartup<Startup>()
+                        ;
+                });
         }
     }
 }

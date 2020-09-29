@@ -7,7 +7,7 @@
   &lt;PhysicalFolder Path="C:\Users\SHIFTUP\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.3" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\SHIFTUP\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.4" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=127852b3_002D76cb_002D4059_002D92d5_002Dae36bff26203/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Scenario_1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=127852b3_002D76cb_002D4059_002D92d5_002Dae36bff26203/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Scenario_1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\SHIFTUP\source\repos\Server\Tests" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2a38d155_002D5834_002D41a9_002D84e6_002Dd8435916f4c7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Scenario_1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -34,10 +34,8 @@
     &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.IndexPageTests.Hello2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b07ec892_002D5728_002D4c3b_002Da58e_002D3266146e132c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Scenario_1 #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::57104E63-E2EE-4001-AA1F-79ABDD73F8A9::.NETCoreApp,Version=v3.1::Tests.Integration.MockingIntegrationTest.Scenario_1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b07ec892_002D5728_002D4c3b_002Da58e_002D3266146e132c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Scenario_1 #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\SHIFTUP\source\repos\Server\Tests" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b080f8bb_002D0754_002D4949_002Da4d7_002D01a3eb36c496/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="hello" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
