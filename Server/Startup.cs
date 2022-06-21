@@ -56,7 +56,7 @@ namespace Server
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "HomeWork API",
+                    Title = "HomeWork API"
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
